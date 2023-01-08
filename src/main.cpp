@@ -1,17 +1,37 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2022)
-and may not be redistributed without written permission.*/
-
-//Using SDL, SDL_image, standard IO, math, and strings
 #include <SDL.h>
+#include <SDL_image.h>
 #include <iostream>
+#include "game.h"
 
 
 int main(int argc, char* argv[]){
 
-std::cout << "Badjoras" << std::endl;
-std::cin.get();
+    int _screenWith = 1024;
+    int _screenHeight = 800;
+
+    Game game("Badjoras", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWith, _screenHeight, SDL_WINDOW_SHOWN);
+
+    SDL_Texture* frog = game.loadTexture("vfx/frog_lg.png");
+
+    while(game.gameState != GameState::OFF){
+
+        SDL_Event evento;
+
+        SDL_PollEvent(&evento);
+
+        switch(evento.type) {
+            case SDL_QUIT:
+                    game.gameState = GameState::OFF;
+                    break;
+
+        }
+
+        game.render(frog);
+        game.run();
+
+
+    }
 
 return 0;
-
-
 }
+
