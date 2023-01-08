@@ -15,11 +15,11 @@ int main(int argc, char* argv[]){
 
     while(game.gameState != GameState::OFF){
 
-        SDL_Event evento;
+        SDL_Event event;
 
-        SDL_PollEvent(&evento);
+        SDL_PollEvent(&event);
 
-        switch(evento.type) {
+        switch(event.type) {
             case SDL_QUIT:
                     game.gameState = GameState::OFF;
                     break;
