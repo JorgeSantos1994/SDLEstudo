@@ -10,17 +10,17 @@ enum class GameState {ON, OFF};
 class Entity : public Window{
 
     public:
-        Entity(const Window &Window, int x, int y, int w, int h);
+        Entity(const Window &Window, const char *texPath, int x, int y, int w, int h);
         GameState gameState;
-        SDL_Texture* loadTexture(const char *filePath);
-        void render(SDL_Texture* tex);
-        void moveEvent();
+        void render();
+        void moveEvent(SDL_Event event);
         
+
     private:
         int _x, _y;
         int _w, _h;
-
-
+        SDL_Texture* _tex = nullptr;
+        const char * _texPath;
 };
 
 

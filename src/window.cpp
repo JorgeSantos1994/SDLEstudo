@@ -24,19 +24,19 @@ void Window::renderer(){
 
 }
 
-SDL_Texture * Window::loadTexture(const char *filePath){
-
-    SDL_Texture* tex = NULL;
-    tex = IMG_LoadTexture(_renderer, filePath);
-
-    if(tex == NULL) {
+SDL_Texture *Window::loadTexture(const char *filePath)
+{
+ 
+    SDL_Surface* surf = IMG_Load(filePath);
+   
+    if(!surf) {
 
             std::cout << "Image load error" << "Error:" << SDL_GetError() << std::endl;
 
     }
 
-
-    return tex;
+    _texBckGround = SDL_CreateTextureFromSurface(_renderer, surf);
+    return _texBckGround;
 }
 
 void Window::render(SDL_Texture* tex) {

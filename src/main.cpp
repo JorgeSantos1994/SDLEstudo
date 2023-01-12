@@ -7,6 +7,8 @@
 
 int main(int argc, char* argv[]){
 
+    Uint32 now = SDL_GetTicks();
+    const Uint32 timeout = now + 16;
     int _screenWith = 1024;
     int _screenHeight = 800;
 
@@ -14,9 +16,9 @@ int main(int argc, char* argv[]){
    
     window.renderer();
     
-    Entity entity(window, 0, 0, 128, 128);
+    Entity entity(window, "vfx/frog_lg.png", 0, 0, 128, 128);
 
-    SDL_Texture* frog = entity.loadTexture("vfx/frog_lg.png");
+    
     SDL_Texture* backGround = window.loadTexture("vfx/background.png");
 
     while(entity.gameState != GameState::OFF){
@@ -31,12 +33,17 @@ int main(int argc, char* argv[]){
                     break;
 
         }
-
+        
+        
+        
+   
+    while(!SDL_TICKS_PASSED(now, timeout)){
         window.render(backGround);
-        entity.render(frog);
-        entity.moveEvent();
+        entity.moveEvent(event);
+        entity.render();
+    }
 
-
+       
     }
 
 return 0;

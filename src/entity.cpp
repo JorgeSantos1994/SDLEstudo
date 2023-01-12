@@ -3,30 +3,26 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-Entity::Entity(const Window &window, int x, int y, int w, int h) : 
-Window(window), _x(x), _y(y), _w(w), _h(h)
-{
-
-};
-
-
-SDL_Texture *Entity::loadTexture(const char *filePath)
+Entity::Entity(const Window &window, const char *texPath, int x, int y, int w, int h) : 
+Window(window), _texPath(texPath), _x(x), _y(y), _w(w), _h(h)
 {
  
-    SDL_Texture* tex = NULL;
-    tex = IMG_LoadTexture(_renderer, filePath);
-
-    if(tex == NULL) {
+    SDL_Surface* surf = IMG_Load(_texPath);
+   
+    if(!surf) {
 
             std::cout << "Image load error" << "Error:" << SDL_GetError() << std::endl;
 
     }
 
+    _tex = SDL_CreateTextureFromSurface(_renderer, surf);
 
-    return tex;
-}
+};
 
-void Entity::render(SDL_Texture* tex) {
+
+
+
+void Entity::render() {
     SDL_Rect src;
     src.x = 0;
     src.y = 0;
@@ -39,22 +35,25 @@ void Entity::render(SDL_Texture* tex) {
     dst.w = _w;
     dst.h = _h;
     
+       
+        SDL_RenderCopy(_renderer,_tex,&src,&dst);
+        SDL_RenderPresent(_renderer);
+        SDL_RenderClear(_renderer);
+
     
-    SDL_RenderCopy(_renderer,tex,&src,&dst);
-    SDL_RenderPresent(_renderer);
-    SDL_RenderClear(_renderer);
-    SDL_Delay(50);
+   
+    
     
 }
 
 
-void Entity::moveEvent(){
+void Entity::moveEvent(SDL_Event event){
 
-    SDL_Event moveEvent;
+   
 
-    if(SDL_PollEvent(&moveEvent)){
-        if(moveEvent.type == SDL_KEYDOWN){
-            switch(moveEvent.key.keysym.sym){
+    if(SDL_PollEvent(&event)){
+        if(event.type == SDL_KEYDOWN){
+            switch(event.key.keysym.sym){
                 case SDLK_LEFT:
                     _x -=10;
                     break;
