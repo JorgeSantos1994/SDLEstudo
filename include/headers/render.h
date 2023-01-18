@@ -1,9 +1,11 @@
-#pragma once
+#ifndef RENDER
+#define RENDER
+
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "entity.h"
+
 #include "window.h"
 
 class Render {
@@ -12,14 +14,10 @@ public:
 
     Render(Window& window);
     void initRenderer();
-    void loadEntity(Entity& entity);
-    void drawEntity(Entity& entity);
-    
+    void renderEntities();
+    SDL_Renderer* getRenderer();
 
 private:
-    SDL_Rect _src;
-    SDL_Rect _dst;
-    SDL_Texture* _tex;
     SDL_Window* _window;
     SDL_Renderer* _renderer;
 
@@ -28,3 +26,5 @@ private:
 
 
 };
+
+#endif

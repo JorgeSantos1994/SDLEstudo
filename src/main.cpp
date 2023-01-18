@@ -5,25 +5,41 @@
 #include "entity.h"
 #include "window.h"
 #include "render.h"
+#include "mousecontroller.h"
 
 int main(int argc, char* argv[]){
 
-    Uint32 now = SDL_GetTicks();
-    const Uint32 timeout = now + 64;
+    Uint32 tick = SDL_GetTicks();
+    Uint32 elapsed = tick + 64;
     int _screenWith = 1024;
     int _screenHeight = 800;
     enum class GameState {ON, OFF};
     GameState gameState;
     
     Window window("Badjoras", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWith, _screenHeight, SDL_WINDOW_SHOWN);
-   
     
-    Entity entity("vfx/frog_lg.png", 0, 0, 128, 128);
-    Entity backGround("vfx/background.png", 0, 0, _screenWith, _screenHeight);
+    
+
+
+
     Render render(window);
-    render.initRenderer();
-    render.loadEntity(entity);
-    render.loadEntity(backGround);
+ 
+    SDL_Renderer* _renderer = render.getRenderer();
+    
+    
+    Entity backGround("vfx/background.png",_renderer, 0, 0, 0, 0, _screenWith, _screenHeight);
+    
+    
+    Entity entity[3];
+
+    for(int i = 0; i < 2; ++i){
+        
+        int x = i * 128;
+        int y = i * 128;
+        entity[i] = {"vfx/frog_lg.png",_renderer, 0, 0, x, y, 128, 128};
+               
+    }
+   
 
     while(gameState != GameState::OFF){
 
@@ -38,16 +54,29 @@ int main(int argc, char* argv[]){
                     break;
 
         }
-        
+         
     
-        while(!SDL_TICKS_PASSED(now, timeout)){
+        while(!SDL_TICKS_PASSED(tick, elapsed)){
+             
+            Mousecontroller mouse(event);
+            backGround.drawEntity();
             
-            render.drawEntity(entity);
-            // render.drawEntity(backGround);
-            entity.moveEvent(event);
+          
+            for(int i = 0; i < 2; ++i){
+                entity[i].drawEntity();
+                entity[i].fallEvent(event, mouse, _screenWith, _screenHeight);
+            }
             
-        }
 
+
+           
+            
+            
+
+            render.renderEntities();
+          
+            elapsed = tick + 64;
+        }
         
      
     

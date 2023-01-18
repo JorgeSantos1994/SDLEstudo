@@ -1,11 +1,14 @@
 #include "entity.h"
 
+Entity::Entity(){}
 
-Entity::Entity(const char *texPath, SDL_Renderer* renderer, int x, int y, int w, int h) : 
- _texPath(texPath), _x(x), _y(y), _w(w), _h(h), _renderer(renderer)
+Entity::Entity(const char *texPath, SDL_Renderer* renderer, int srcx, int srcy, int dstx, int dsty, int w, int h) : 
+ _texPath(texPath), _srcx(srcx), _srcy(srcy), _dstx(dstx), _dsty(dsty), _w(w), _h(h), _renderer(renderer)
 {
     
-setTex();
+    setTex();
+    setSrc(_srcx, _srcy);
+    setDst(_dstx, _dsty);
 
 };
 
@@ -20,7 +23,8 @@ void Entity::setTex(){
     }
 
     _tex = SDL_CreateTextureFromSurface(_renderer, surf);
-
+   
+    // SDL_SetTextureColorMod( _tex, 0, 0, 0);
 }
 
 SDL_Texture* Entity::getTex(){
@@ -28,10 +32,10 @@ SDL_Texture* Entity::getTex(){
     return _tex;
 }
 
-void Entity::setSrc(int _x, int _y){
+void Entity::setSrc(int _srcx, int _srcy){
     
-    _src.x = 0;
-    _src.y = 0;
+    _src.x = _srcx;
+    _src.y = _srcy;
     _src.w = _w;
     _src.h = _h;
    
@@ -43,10 +47,10 @@ SDL_Rect Entity::getSrc()
     return _src;
 }
 
-void Entity::setDst(int _x, int _y){
+void Entity::setDst(int _dstx, int _dsty){
     
-    _dst.x = _x;
-    _dst.y = _y;
+    _dst.x = _dstx;
+    _dst.y = _dsty;
     _dst.w = _w;
     _dst.h = _h;
 }
@@ -59,8 +63,7 @@ SDL_Rect Entity::getDst(){
 
 void Entity :: drawEntity() {
 
-    setSrc(_x, _y);
-    setDst(_x, _y);
+   
     SDL_RenderCopy(_renderer,_tex,&_src,&_dst);
 
     
@@ -69,24 +72,35 @@ void Entity :: drawEntity() {
 
 
 
-void Entity :: fallEvent(SDL_Event event, Mousecontroller& mouse, int screenWith, int screenHeight, Uint32 tick, Uint32 elapsed) {
+void Entity :: fallEvent(SDL_Event event, Mousecontroller& mouse, int screenWith, int screenHeight) {
  
 
-    std::cout << _dst.y << " : " << screenHeight << std::endl;
+    std::cout << _dst.y << std::endl;
 
     if(mouse.mx <= _dst.x + _dst.w && mouse.mx >= _dst.x  && mouse.my <= _dst.y + _dst.h && mouse.my >= _dst.y)  {
+          
+         std::cout << "selected" << std::endl;
+          
           if(_dst.y < screenHeight - 100){
             if(mouse.mLeft == true){
         
-                _y += 10;
-                           
+                _dsty += 10;
+                setDst(_dstx, _dsty);         
             }
             }               
         }                  
       
 }
 
+void Entity :: testEvent(SDL_Event event, Mousecontroller& mouse, int screenWith, int screenHeight) {
 
+    if(mouse.mLeft == true){
+
+        setDst(_dstx + _dst.w + 25, _dsty + _dst.y + 25);
+        
+    }
+
+}
 
 
 void Entity::moveEvent(SDL_Event event){
@@ -97,22 +111,22 @@ void Entity::moveEvent(SDL_Event event){
         if(event.type == SDL_KEYDOWN){
             switch(event.key.keysym.sym){
                 case SDLK_LEFT:
-                    _x -=10;
+                    _dstx -=10;
                     break;
                 case SDLK_RIGHT:
-                    _x +=10;
+                    _dstx +=10;
                     break;
                 case SDLK_UP:
-                    _y -=10;
+                    _dsty -=10;
                     break;
                 case SDLK_DOWN:
-                    _y +=10;
+                    _dsty +=10;
                     break;
             }
         }
     }
-
 }
+
 
 
 

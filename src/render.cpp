@@ -5,34 +5,27 @@
 Render :: Render(Window& window) {
 
 
-_window = window.getWindow();
+    _window = window.getWindow();
+    initRenderer();
 
 }
 
 void Render :: initRenderer(){
 
- _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+    _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
 }
 
-void Render :: loadEntity(Entity& entity) {
+SDL_Renderer* Render :: getRenderer(){
 
-entity.setTex(_renderer);
-_tex = entity.getTex();
-
+    return _renderer;
 }
 
-void Render :: drawEntity(Entity& entity) {
 
-entity.setSrc();
-_src = entity.getSrc();
-entity.setDst();
-_dst = entity.getDst();
+void Render :: renderEntities() {
 
-SDL_RenderClear(_renderer);
-SDL_RenderCopy(_renderer,_tex,&_src,&_dst);
-SDL_RenderPresent(_renderer);
-        
+    SDL_RenderPresent(_renderer);
+    SDL_RenderClear(_renderer);       
 
 
 }
