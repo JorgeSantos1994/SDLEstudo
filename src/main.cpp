@@ -9,8 +9,9 @@
 
 int main(int argc, char* argv[]){
 
-    Uint32 tick = SDL_GetTicks();
-    Uint32 elapsed = tick + 64;
+    Uint32 startTick = SDL_GetTicks();
+    Uint32 elapsed = startTick + 64;
+
     int _screenWith = 1024;
     int _screenHeight = 800;
     enum class GameState {ON, OFF};
@@ -30,9 +31,9 @@ int main(int argc, char* argv[]){
     Entity backGround("vfx/background.png",_renderer, 0, 0, 0, 0, _screenWith, _screenHeight);
     
     
-    Entity entity[3];
+    Entity entity[15];
 
-    for(int i = 0; i < 2; ++i){
+    for(int i = 0; i < 15; ++i){
         
         int x = i * 128;
         int y = i * 128;
@@ -43,6 +44,8 @@ int main(int argc, char* argv[]){
 
     while(gameState != GameState::OFF){
 
+        Uint32 Tick = SDL_GetTicks();
+
         SDL_Event event;
 
         SDL_PollEvent(&event);
@@ -50,19 +53,19 @@ int main(int argc, char* argv[]){
         switch(event.type) {
             case SDL_QUIT:
                     gameState = GameState::OFF;
-                    
+                    std::cout << "quit" << std::endl;
                     break;
 
         }
          
     
-        while(!SDL_TICKS_PASSED(tick, elapsed)){
+        while(!SDL_TICKS_PASSED(startTick, elapsed)){
              
             Mousecontroller mouse(event);
             backGround.drawEntity();
             
           
-            for(int i = 0; i < 2; ++i){
+            for(int i = 0; i < 7; ++i){
                 entity[i].drawEntity();
                 entity[i].fallEvent(event, mouse, _screenWith, _screenHeight);
             }
@@ -75,7 +78,7 @@ int main(int argc, char* argv[]){
 
             render.renderEntities();
           
-            elapsed = tick + 64;
+            
         }
         
      
@@ -83,6 +86,7 @@ int main(int argc, char* argv[]){
        
     }
 
+    window.~Window();
 return 0;
 }
 

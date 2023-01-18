@@ -75,11 +75,11 @@ void Entity :: drawEntity() {
 void Entity :: fallEvent(SDL_Event event, Mousecontroller& mouse, int screenWith, int screenHeight) {
  
 
-    std::cout << _dst.y << std::endl;
+    // std::cout << _dst.y << std::endl;
 
     if(mouse.mx <= _dst.x + _dst.w && mouse.mx >= _dst.x  && mouse.my <= _dst.y + _dst.h && mouse.my >= _dst.y)  {
           
-         std::cout << "selected" << std::endl;
+        //  std::cout << "selected" << std::endl;
           
           if(_dst.y < screenHeight - 100){
             if(mouse.mLeft == true){
