@@ -12,6 +12,7 @@ public:
     Mousecontroller(SDL_Event event);
     void mousePos();
     void mouseClicks();
+    void getMouse();
     int mx;
     int my;
     bool mLeft = false;
