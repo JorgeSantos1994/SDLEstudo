@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "entity.h"
+#include "button.h"
+#include "frog.h"
 #include "window.h"
 #include "render.h"
 #include "mousecontroller.h"
@@ -49,16 +51,20 @@ int main(int argc, char* argv[]){
     Entity backGround("vfx/background.png",_renderer, 0, 0, 0, 0, _screenWith, _screenHeight);
     
     
-    Entity entity[15];
+    Frog frog[15];
 
-    for(int i = 0; i < 5; ++i){
+     for(int i = 0; i < 5; ++i){
         
         int x = i * 128;
       
-        entity[i] = {"vfx/frog_lg.png",_renderer, 0, 0, x, 0, 128, 128};
+        frog[i] = {"vfx/frog_lg.png",_renderer, 0, 0, x, 0, 128, 128};
                
     }
    
+   
+    Button button("vfx/button.png",_renderer, 0, 0, _screenWith - 100, _screenHeight - 100, 64, 64);
+
+
    
     
 
@@ -90,21 +96,52 @@ int main(int argc, char* argv[]){
         
         backGround.drawEntity();
 
-        entity[0].moveEvent(event);
+        button.drawEntity();
+
+        button.handleButtonEvents(mouse, 70);
+
+       
+        std::cout << mouse.mLeft << " : " << mouse.mRight << std::endl;
+        std::cout << mouse.mx << " : " << mouse.my << std::endl;
         
         for(int i = 0; i < 5; ++i){
            
-           
-            entity[i].handleEvents(event, mouse);
+            bool readyReset;
             
+            frog[i].handleEvents(mouse);
+
+            frog[i].fallEvent(_screenWith, _screenHeight, timeStep);
+
+            frog[i].drawEntity(); 
             
-            entity[i].fallEvent(event, _screenWith, _screenHeight, timeStep);
+            // frog[i].moveEvent(event);
             
-           
-            
-            entity[i].drawEntity(); 
-                          
-        }
+            if(frog[i].getFrogState() == FrogStop){
+
+                readyReset = true;
+            }
+
+            if(button.getButtonState()){
+                
+                if(!readyReset){
+                     frog[i].setFrogState(FrogFall); 
+
+                } else {
+                    
+                    frog[i].setFrogState(FrogReset);
+                      readyReset = false;
+                      
+
+                }
+               
+
+            };
+                
+        
+
+        };
+
+
 
             render.renderEntities();
                 

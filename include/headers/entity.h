@@ -5,16 +5,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "mousecontroller.h"
 
-enum EntityState {
-    
-    
-    entityStop, 
-    entityFall,
-    entityReset
 
-    };
 
 
 class Entity{
@@ -29,19 +21,17 @@ class Entity{
         void setDst(int _x, int _y);
         SDL_Rect getDst();
         void drawEntity();
-        void handleEvents(SDL_Event event, Mousecontroller& mouse);
-        void moveEvent(SDL_Event event);
-        void fallEvent(SDL_Event event, int screenWith, int screenHeight, float timeStep);
-        void testEvent(SDL_Event event, Mousecontroller& mouse, int screenWith, int screenHeight);
+       
 
+    protected:
 
-
-    private:
-        float _srcx, _srcy;
         float _dstx, _dsty;
+        float _srcx, _srcy;
         int _w, _h;
+    
+    private:
+        
         const char* _texPath;
-        EntityState entitystate;
         SDL_Texture* _tex = nullptr;
         SDL_Renderer* _renderer = nullptr;
         SDL_Rect _src;
