@@ -7,7 +7,7 @@
 #include "frog.h"
 #include "window.h"
 #include "render.h"
-#include "mousecontroller.h"
+#include "controller.h"
 #include "timer.h"
 
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
      
     SDL_Event event;
 
-    Mousecontroller mouse(event); 
+    Controller controller(event); 
     
     //Time management
     Timer fpsTimer;
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
 
 
         capTimer.start();
-        mouse.getMouse();
+        controller.getController();
        
 
         float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
@@ -98,23 +98,21 @@ int main(int argc, char* argv[]){
 
         button.drawEntity();
 
-        button.handleButtonEvents(mouse, 70);
+        button.handleButtonEvents(controller, 70);
 
        
-        std::cout << mouse.mLeft << " : " << mouse.mRight << std::endl;
-        std::cout << mouse.mx << " : " << mouse.my << std::endl;
+        std::cout << controller.arrowDown << " : " << controller.mRight << std::endl;
+        std::cout << controller.mx << " : " << controller.my << std::endl;
         
         for(int i = 0; i < 5; ++i){
            
             bool readyReset;
             
-            frog[i].handleEvents(mouse);
+            frog[i].handleEvents(controller);
 
             frog[i].fallEvent(_screenWith, _screenHeight, timeStep);
 
             frog[i].drawEntity(); 
-            
-            // frog[i].moveEvent(event);
             
             if(frog[i].getFrogState() == FrogStop){
 

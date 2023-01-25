@@ -17,34 +17,51 @@ void Frog :: setFrogState(FrogState state){
 
 }
 
-void Frog :: handleEvents(Mousecontroller& mouse){
+void Frog :: handleEvents(Controller& controller){
 
 _dst = getDst();
 
-   if(mouse.mx <= _dst.x + _dst.w && mouse.mx >= _dst.x  && mouse.my <= _dst.y + _dst.h && mouse.my >= _dst.y)  {
+if(controller.mx <= _dst.x + _dst.w && controller.mx >= _dst.x  && controller.my <= _dst.y + _dst.h && controller.my >= _dst.y)  {
         
           
-         if(mouse.mLeft == true)
-        {
+    if(controller.mLeft == true)
+    {
                                 
-            frogstate = FrogFall; 
+        frogstate = FrogFall; 
 
-     
+    }
 
-        }
-
-        if(mouse.mRight == true)
-        {
+    if(controller.mRight == true)
+    {
                                 
-            frogstate = FrogReset; 
+        frogstate = FrogReset; 
 
-        }      
+    }      
                                            
 }       
- 
+        
+if(controller.arrowDown == true){
 
+        _dst.y +=10;
+         setDst(_dst.x, _dst.y); 
+    }
 
+if(controller.arrowUp == true){
 
+        _dst.y -=10;
+         setDst(_dst.x, _dst.y);  
+    }
+
+if(controller.arrowLeft == true){
+
+         _dst.x -=10;
+         setDst(_dst.x, _dst.y); 
+    }
+if(controller.arrowRight == true){
+
+        _dst.x +=10;
+         setDst(_dst.x, _dst.y); 
+    }
 }
 
 void Frog :: fallEvent(int screenWith, int screenHeight, float timeStep) {
@@ -81,36 +98,4 @@ void Frog :: fallEvent(int screenWith, int screenHeight, float timeStep) {
 
 
 
-
-void Frog::moveEvent(SDL_Event event){
-
-    std::cout << "event" << std::endl;
-
-    while(SDL_PollEvent(&event) != 0){
-        std::cout << "poll" << std::endl;
-        if(event.type == SDL_KEYDOWN){
-         
-          std::cout << "key" << std::endl;
-
-            switch(event.key.keysym.sym){
-                case SDLK_LEFT:
-                    _dst.x -=10;
-                     setDst(_dst.x, _dst.y); 
-                    break;
-                case SDLK_RIGHT:
-                    _dst.x +=10;
-                     setDst(_dst.x, _dst.y); 
-                    break;
-                case SDLK_UP:
-                    _dst.y -=10;
-                     setDst(_dst.x, _dst.y); 
-                    break;
-                case SDLK_DOWN:
-                    _dst.y +=10;
-                     setDst(_dst.x, _dst.y); 
-                    break;
-            }
-        }
-    }
-}
 

@@ -6,7 +6,7 @@
 #include <SDL_image.h>
 
 #include "entity.h"
-#include "mousecontroller.h"
+#include "controller.h"
 
 
 
@@ -15,7 +15,7 @@ class Button : public Entity {
 public:
     Button();
     using Entity::Entity;
-    void handleButtonEvents(Mousecontroller& mouse, int selectableOffset);
+    void handleButtonEvents(Controller& controller, int selectableOffset);
     bool getButtonState();
 
 private:

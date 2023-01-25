@@ -6,7 +6,7 @@
 #include <SDL_image.h>
 
 #include "entity.h"
-#include "mousecontroller.h"
+#include "controller.h"
 
 
 enum FrogState {
@@ -14,7 +14,8 @@ enum FrogState {
     
     FrogStop, 
     FrogFall,
-    FrogReset
+    FrogReset,
+    
 
     };
 
@@ -26,9 +27,9 @@ public:
     using Entity::Entity;
     FrogState getFrogState();
     void setFrogState(FrogState state);
-    void handleEvents(Mousecontroller& mouse);
+    void handleEvents(Controller& mouse);
     void fallEvent(int screenWith, int screenHeight, float timeStep);
-    void moveEvent(SDL_Event event);
+    
    
 
 private:
